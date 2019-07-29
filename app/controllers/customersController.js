@@ -13,8 +13,16 @@ router.get('/:customerId', (req,res) => {
     let customerId = req.params.customerId;
 
     Customer.findOne({ customerId })
-    .then((customer) => { res.send(customer) })
-    .catch((e) => { res.send(e); })
+    .then((customer) => {
+        if(customer) {
+            res.status(200).send(customer)
+        } else {
+            res.status(404).send('No Address Found!');
+        }
+    })
+    .catch((e) => {
+        res.status(400).send('Unable to fetch the details..');
+    })
 })
 
 router.post('/',(req,res) => {
