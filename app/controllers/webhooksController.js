@@ -72,8 +72,14 @@ router.post('/orders/create', (req, res) => {
           .catch((e) => { res.send(e); })
       
       } else {
-        customer.shippingAddress.push(webhookResponse.shipping_address);
-        customer.billingAddress.push(webhookResponse.billing_address);
+        customer.shippingAddress.push({
+          'orderId': webhookResponse.id,
+          'address': webhookResponse.shipping_address
+        });
+        customer.billingAddress.push({
+          'orderId': webhookResponse.id,
+          'address': webhookResponse.billing_address
+        });
         customer.save()
         .then((customer) => { res.send(customer); })
         .catch((e) => { res.send(e); })
