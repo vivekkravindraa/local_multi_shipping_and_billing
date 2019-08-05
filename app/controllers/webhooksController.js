@@ -72,17 +72,25 @@ router.post('/orders/create', (req, res) => {
           .catch((e) => { res.send(e); })
       
       } else {
-        customer.shippingAddress.push({
-          'orderId': webhookResponse.id,
-          'address': webhookResponse.shipping_address
-        });
-        customer.billingAddress.push({
-          'orderId': webhookResponse.id,
-          'address': webhookResponse.billing_address
-        });
-        customer.save()
-        .then((customer) => { res.send(customer); })
-        .catch((e) => { res.send(e); })
+        let customerAddresses = customer.shippingAddress || customer.billingAddress;
+
+        let result = customerAddresses.find((item) => item.orderId == webhookResponse.id);
+
+        if(result) {
+          console.log('Address Exists! Don\'t Push');
+        } else {
+          customer.shippingAddress.push({
+            'orderId': webhookResponse.id,
+            'address': webhookResponse.shipping_address
+          });
+          customer.billingAddress.push({
+            'orderId': webhookResponse.id,
+            'address': webhookResponse.billing_address
+          });
+          customer.save()
+          .then((customer) => { res.send(customer); })
+          .catch((e) => { res.send(e); })
+        }
       }
     })
     .catch((e) => { res.send(e); })
