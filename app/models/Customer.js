@@ -4,40 +4,50 @@ const Schema = mongoose.Schema;
 const customerSchema = new Schema({
     customerId: { type: String },
     shopDomain: { type: String },
-    shippingAddress: [{
-        first_name: { type: String },
-        address1: { type: String },
-        phone: { type: String },
-        city: { type: String },
-        zip: { type: String },
-        province: { type: String },
-        country: { type: String },
-        last_name: { type: String },
-        address2: { type: String },
-        company: { type: String },
-        latitude: { type: String },
-        longitude: { type: String },
-        name: { type: String },
-        country_code: { type: String },
-        province_code: { type: String }
-    }],
-    billingAddress: [{
-        first_name: { type: String },
-        address1: { type: String },
-        phone: { type: String },
-        city: { type: String },
-        zip: { type: String },
-        province: { type: String },
-        country: { type: String },
-        last_name: { type: String },
-        address2: { type: String },
-        company: { type: String },
-        latitude: { type: String },
-        longitude: { type: String },
-        name: { type: String },
-        country_code: { type: String },
-        province_code: { type: String },
-    }]
+    shippingAddress: [
+        {
+            orderId: { type: String },
+            address: {
+                first_name: { type: String },
+                address1: { type: String },
+                phone: { type: String },
+                city: { type: String },
+                zip: { type: String },
+                province: { type: String },
+                country: { type: String },
+                last_name: { type: String },
+                address2: { type: String },
+                company: { type: String },
+                latitude: { type: String },
+                longitude: { type: String },
+                name: { type: String },
+                country_code: { type: String },
+                province_code: { type: String }
+            }
+        }
+    ],
+    billingAddress: [
+        {
+            orderId: { type: String },
+            address: {
+                first_name: { type: String },
+                address1: { type: String },
+                phone: { type: String },
+                city: { type: String },
+                zip: { type: String },
+                province: { type: String },
+                country: { type: String },
+                last_name: { type: String },
+                address2: { type: String },
+                company: { type: String },
+                latitude: { type: String },
+                longitude: { type: String },
+                name: { type: String },
+                country_code: { type: String },
+                province_code: { type: String }
+            }
+        }
+    ]
 })
 
 const Customer = mongoose.model('Customer', customerSchema);

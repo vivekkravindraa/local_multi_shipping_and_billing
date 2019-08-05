@@ -21,43 +21,50 @@ router.post('/orders/create', (req, res) => {
           'shopDomain': `${shopDomain}`,
           'billingAddress': [
             {
-              'first_name': `${webhookResponse.billing_address.first_name}`,
-              'address1': `${webhookResponse.billing_address.address1}`,
-              'phone': `${webhookResponse.billing_address.phone}`,
-              'city': `${webhookResponse.billing_address.city}`,
-              'zip': `${webhookResponse.billing_address.zip}`,
-              'province': `${webhookResponse.billing_address.province}`,
-              'country': `${webhookResponse.billing_address.country}`,
-              'last_name': `${webhookResponse.billing_address.last_name}`,
-              'address2': `${webhookResponse.billing_address.address2}`,
-              'company': `${webhookResponse.billing_address.company}`,
-              'latitude': `${webhookResponse.billing_address.latitude}`,
-              'longitude': `${webhookResponse.billing_address.longitude}`,
-              'name': `${webhookResponse.billing_address.name}`,
-              'country_code': `${webhookResponse.billing_address.country_code}`,
-              'province_code': `${webhookResponse.billing_address.province_code}`,
+              'orderId': `${webhookResponse.id}`,
+              'address': {
+                'first_name': `${webhookResponse.billing_address.first_name}`,
+                'address1': `${webhookResponse.billing_address.address1}`,
+                'phone': `${webhookResponse.billing_address.phone}`,
+                'city': `${webhookResponse.billing_address.city}`,
+                'zip': `${webhookResponse.billing_address.zip}`,
+                'province': `${webhookResponse.billing_address.province}`,
+                'country': `${webhookResponse.billing_address.country}`,
+                'last_name': `${webhookResponse.billing_address.last_name}`,
+                'address2': `${webhookResponse.billing_address.address2}`,
+                'company': `${webhookResponse.billing_address.company}`,
+                'latitude': `${webhookResponse.billing_address.latitude}`,
+                'longitude': `${webhookResponse.billing_address.longitude}`,
+                'name': `${webhookResponse.billing_address.name}`,
+                'country_code': `${webhookResponse.billing_address.country_code}`,
+                'province_code': `${webhookResponse.billing_address.province_code}`,
+              }
             }
           ],
           'shippingAddress': [
             {
-              'first_name': `${webhookResponse.shipping_address.first_name}`,
-              'address1': `${webhookResponse.shipping_address.address1}`,
-              'phone': `${webhookResponse.shipping_address.phone}`,
-              'city': `${webhookResponse.shipping_address.city}`,
-              'zip': `${webhookResponse.shipping_address.zip}`,
-              'province': `${webhookResponse.shipping_address.province}`,
-              'country': `${webhookResponse.shipping_address.country}`,
-              'last_name': `${webhookResponse.shipping_address.last_name}`,
-              'address2': `${webhookResponse.shipping_address.address2}`,
-              'company': `${webhookResponse.shipping_address.company}`,
-              'latitude': `${webhookResponse.shipping_address.latitude}`,
-              'longitude': `${webhookResponse.shipping_address.longitude}`,
-              'name': `${webhookResponse.shipping_address.name}`,
-              'country_code': `${webhookResponse.shipping_address.country_code}`,
-              'province_code': `${webhookResponse.shipping_address.province_code}`
+              'orderId': `${webhookResponse.id}`,
+              'address': {
+                'first_name': `${webhookResponse.shipping_address.first_name}`,
+                'address1': `${webhookResponse.shipping_address.address1}`,
+                'phone': `${webhookResponse.shipping_address.phone}`,
+                'city': `${webhookResponse.shipping_address.city}`,
+                'zip': `${webhookResponse.shipping_address.zip}`,
+                'province': `${webhookResponse.shipping_address.province}`,
+                'country': `${webhookResponse.shipping_address.country}`,
+                'last_name': `${webhookResponse.shipping_address.last_name}`,
+                'address2': `${webhookResponse.shipping_address.address2}`,
+                'company': `${webhookResponse.shipping_address.company}`,
+                'latitude': `${webhookResponse.shipping_address.latitude}`,
+                'longitude': `${webhookResponse.shipping_address.longitude}`,
+                'name': `${webhookResponse.shipping_address.name}`,
+                'country_code': `${webhookResponse.shipping_address.country_code}`,
+                'province_code': `${webhookResponse.shipping_address.province_code}`
+              }
             }
           ]
         }
+
         let customer = new Customer(data);
 
         customer.save()
