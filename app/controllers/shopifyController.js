@@ -14,7 +14,7 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const tunnelUrl = process.env.TUNNEL_URL;
 const apiVersion = process.env.API_VERSION;
 const scopes = 'read_products, read_orders, write_orders';
-const forwardingAddress = "https://52d7ca59.eu.ngrok.io";
+const forwardingAddress = "https://948b5d95.eu.ngrok.io";
 
 const { Shopify } = require('../models/Shopify');
 
@@ -108,7 +108,7 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(tokenUpdated => {
                                 if (tokenUpdated) {
-                                    console.log('Shop found. Token updated.')
+                                    console.log('Shop found. Token updated.');
                                 }
                             })
                             .catch((e) => {
@@ -117,6 +117,9 @@ router.get('/callback', (req, res) => {
                     }
                 });
 
+                // axios.get(`https://${shop}/admin/api/${apiVersion}/webhooks/count.json`, { headers: shopRequestHeaders })
+                // .then((webhook) => {
+                //     if(webhook.count === 0) {
                 let webhookUrl = `https://${shop}/admin/api/${apiVersion}/webhooks.json`;
                 let webhookBody = {
                     "webhook": {
@@ -126,8 +129,11 @@ router.get('/callback', (req, res) => {
                     }
                 }
                 axios.post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
-                .then((response) => { console.log(response); })
-                .catch((e) => { console.log(e); })
+                    .then((response) => { console.log(response); })
+                    .catch((e) => { console.log(e); })
+                //     }
+                // })
+                // .catch((e) => { console.log(e); })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
