@@ -117,23 +117,25 @@ router.get('/callback', (req, res) => {
                     }
                 });
 
-                // axios.get(`https://${shop}/admin/api/${apiVersion}/webhooks/count.json`, { headers: shopRequestHeaders })
-                // .then((webhook) => {
-                //     if(webhook.count === 0) {
-                let webhookUrl = `https://${shop}/admin/api/${apiVersion}/webhooks.json`;
-                let webhookBody = {
-                    "webhook": {
-                        "topic": "orders/create",
-                        "address": `${tunnelUrl}/webhooks/orders/create`,
-                        "format": "json"
-                    }
-                }
-                axios.post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
-                    .then((response) => { console.log(response); })
+                axios
+                    .get(`https://${shop}/admin/api/${apiVersion}/webhooks/count.json`, { headers: shopRequestHeaders })
+                    .then((webhook) => {
+                        if(webhook.data.count === 0) {
+                            let webhookUrl = `https://${shop}/admin/api/${apiVersion}/webhooks.json`;
+                            let webhookBody = {
+                                "webhook": {
+                                    "topic": "orders/create",
+                                    "address": `${tunnelUrl}/webhooks/orders/create`,
+                                    "format": "json"
+                                }
+                            }
+                            axios
+                                .post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
+                                .then((response) => { console.log(response); })
+                                .catch((e) => { console.log(e); })
+                        }
+                    })
                     .catch((e) => { console.log(e); })
-                //     }
-                // })
-                // .catch((e) => { console.log(e); })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
