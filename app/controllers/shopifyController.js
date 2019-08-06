@@ -117,31 +117,17 @@ router.get('/callback', (req, res) => {
                     }
                 });
 
-                Shopify.findOne({ shopDomain: shop })
-                .then((shopify) => {
-                    if(!shopify.isWebhookRegistered) {
-                        let webhookUrl = `https://${shop}/admin/api/${apiVersion}/webhooks.json`;
-                        let webhookBody = {
-                            "webhook": {
-                                "topic": "orders/create",
-                                "address": `${tunnelUrl}/webhooks/orders/create`,
-                                "format": "json"
-                            }
-                        }
-                        axios.post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
-                        .then((response) => {
-                            if(response) {
-                                shopify.isWebhookRegistered = true;
-                                shopify.save()
-                                .then((data) => { console.log(data); })
-                                .catch((e) => { console.log(e); })
-                            }
-                        })
-                        .catch((e) => { console.log(e) })
-                    } else {
-                        console.log('Webhook: Already Registered!')
+                let webhookUrl = `https://${shop}/admin/api/${apiVersion}/webhooks.json`;
+                let webhookBody = {
+                    "webhook": {
+                        "topic": "orders/create",
+                        "address": `${tunnelUrl}/webhooks/orders/create`,
+                        "format": "json"
                     }
-                })
+                }
+                axios.post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
+                .then((response) => { console.log(response); })
+                .catch((e) => { console.log(e); })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
