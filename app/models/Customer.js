@@ -63,7 +63,7 @@ module.exports = { Customer }
 // "country": "United States",
 // "country_code": "US",
 // "province": "Kentucky",
-// "province_code": "KY"
+// "province_code": "KY",
 // "zip": "K2P0B0",
 // "phone": "555-555-BILL",
 // "company": "My Company",
