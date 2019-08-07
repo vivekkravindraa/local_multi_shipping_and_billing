@@ -131,7 +131,7 @@ router.get('/callback', (req, res) => {
                             }
                             axios
                                 .post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
-                                .then((response) => { console.log(response); })
+                                .then((response) => { console.log(response.data); })
                                 .catch((e) => { console.log(e); })
                         }
                     })
