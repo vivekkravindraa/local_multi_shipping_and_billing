@@ -14,7 +14,7 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const tunnelUrl = process.env.TUNNEL_URL;
 const apiVersion = process.env.API_VERSION;
 const scopes = 'read_products, read_orders, write_orders';
-const forwardingAddress = "https://e839a9e5.eu.ngrok.io";
+const forwardingAddress = "https://96a6dcdd.ngrok.io";
 
 const { Shopify } = require('../models/Shopify');
 
