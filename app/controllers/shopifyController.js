@@ -96,11 +96,13 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(userSaved => {
                                 if (userSaved) {
-                                    console.log('Shop created.');
+                                    res.status(200).send('Shop created.');
+                                } else {
+                                    res.status(404).send('Unable to create shop!');
                                 }
                             })
                             .catch((e) => {
-                                console.log(e);
+                                res.status(400).send('Unable to fetch the details..');
                             });
                     } else {
                         user.accessToken = body.accessToken;
@@ -108,11 +110,13 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(tokenUpdated => {
                                 if (tokenUpdated) {
-                                    console.log('Shop found. Token updated.');
+                                    res.status(200).send('Shop found, Token updated.');
+                                } else {
+                                    res.status(404).send('Shop not found!');
                                 }
                             })
                             .catch((e) => {
-                                console.log(e);
+                                res.status(400).send('Unable to fetch the details..');
                             });
                     }
                 });
@@ -131,8 +135,16 @@ router.get('/callback', (req, res) => {
                             }
                             axios
                                 .post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
-                                .then((response) => { console.log(response.data); })
-                                .catch((e) => { console.log(e); })
+                                .then((response) => {
+                                    if(response) {
+                                        res.status(200).send('Successfully registered the webhook.');
+                                    } else {
+                                        res.status(404).send('Webhook registration failed!');
+                                    }
+                                })
+                                .catch((e) => {
+                                    res.status(400).send('Unable to fetch the details..');
+                                })
                         }
                     })
                     .catch((e) => { console.log(e); })

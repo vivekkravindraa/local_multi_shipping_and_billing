@@ -34,18 +34,34 @@ router.post('/',(req,res) => {
             customer.shippingAddress.push(body.shippingAddress);
             customer.billingAddress.push(body.billingAddress);
             customer.save()
-            .then((customer) => { res.send(customer); })
-            .catch((e) => { res.send(e); })
+            .then((customer) => {
+                if(customer) {
+                    res.status(200).send(customer);
+                } else {
+                    res.status(404).send('Not Found');
+                }
+            })
+            .catch((e) => {
+                res.status(400).send('Unable to fetch the details..');
+            })
         } else {
             let customer = new Customer(body);
 
             customer.save()
-            .then((customer) => { res.send(customer); })
-            .catch((e) => { res.send(e); })
+            .then((customer) => {
+                if(customer) {
+                    res.status(200).send(customer); 
+                } else {
+                    res.status(404).send('Not Found');
+                }
+            })
+            .catch((e) => {
+                res.status(400).send('Unable to fetch the details..');
+            })
         }
     })
     .catch((e) => {
-        res.send(e);
+        res.status(400).send('Unable to fetch the details..');
     })
 })
 
