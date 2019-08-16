@@ -68,8 +68,16 @@ router.post('/orders/create', (req, res) => {
         let customer = new Customer(data);
 
         customer.save()
-          .then((customer) => { res.send(customer); })
-          .catch((e) => { res.send(e); })
+          .then((customer) => {
+            if(csutomer) {
+              res.status(200).send(customer);
+            } else {
+              res.status(404).send('Customer not found!');
+            }
+          })
+          .catch((e) => {
+            res.status(400).send('Unable to fetch the details..');
+          })
       
       } else {
         let customerAddresses = customer.shippingAddress || customer.billingAddress;
@@ -77,7 +85,7 @@ router.post('/orders/create', (req, res) => {
         let result = customerAddresses.find((item) => item.orderId == webhookResponse.id);
 
         if(result) {
-          console.log('Address Exists! Don\'t Push');
+          res.status(409).send('Webhook has already pushed the data!');
         } else {
           customer.shippingAddress.push({
             'orderId': webhookResponse.id,
@@ -88,12 +96,22 @@ router.post('/orders/create', (req, res) => {
             'address': webhookResponse.billing_address
           });
           customer.save()
-          .then((customer) => { res.send(customer); })
-          .catch((e) => { res.send(e); })
+          .then((customer) => {
+            if(customer) {
+              res.status(200).send(customer);
+            } else {
+              res.status(404).send('Customer not found!');
+            }
+          })
+          .catch((e) => {
+            res.status(400).send('Unable to fetch the details..');
+          })
         }
       }
     })
-    .catch((e) => { res.send(e); })
+    .catch((e) => {
+      res.status(400).send('Unable to fetch the details..');
+    })
 })
 
 module.exports = { webhooksController: router }
