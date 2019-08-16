@@ -7,9 +7,9 @@ router.get('/',(req,res) => {
     Customer.find()
     .then((customers) => {
         if(customers) {
-            res.send(200).send(customers);
+            res.status(200).send(customers);
         } else {
-            res.send(404).send('Customers not found.')
+            res.status(404).send('Customers not found.')
         }
     })
     .catch((e) => {
