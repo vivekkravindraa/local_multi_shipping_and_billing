@@ -5,8 +5,16 @@ const { Customer } = require('../models/Customer');
 
 router.get('/',(req,res) => {
     Customer.find()
-    .then((customers) => { res.send(customers); })
-    .catch((e) => { res.send(e); })
+    .then((customers) => {
+        if(customers) {
+            res.send(200).send(customers);
+        } else {
+            res.send(404).send('Customers not found.')
+        }
+    })
+    .catch((e) => {
+        res.status(400).send('Unable to fetch the details..')
+    })
 })
 
 router.get('/:customerId', (req,res) => {
