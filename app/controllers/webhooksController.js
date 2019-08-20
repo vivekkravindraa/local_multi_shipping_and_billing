@@ -69,7 +69,7 @@ router.post('/orders/create', (req, res) => {
 
         customer.save()
           .then((customer) => {
-            if(csutomer) {
+            if(customer) {
               res.status(200).send(customer);
             } else {
               res.status(404).send('Customer not found!');
