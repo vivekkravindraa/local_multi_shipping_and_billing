@@ -42,6 +42,10 @@ router.get('/callback', (req, res) => {
 
     if (state !== stateCookie) {
         return res.status(403).send('Request origin cannot be verified');
+        // return res.status(200).render('app', {
+        //     title: 'Shopify Node App',
+        //     shop: shop
+        // });
     }
 
     if (shop && hmac && code) {
