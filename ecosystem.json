@@ -1,0 +1,27 @@
+{
+    "apps": [
+        {
+            "name": "multi-shipping-and-billing",
+            "script": "index.js",
+            "instances": 1,
+            "exec_mode": "cluster_mode",
+            "env": {
+                "PORT": 8080
+            },
+            "env_production": {
+                "NODE_ENV": "production",
+                "PORT": 8080
+            }
+        }
+    ],
+    "deploy": {
+        "production": {
+            "user": "hasan",
+            "host": ["34.93.200.9"],
+            "ref": "origin/master",
+            "repo": "git@bitbucket.org:kloctech/crossbeats_multi_shipping_and_billing.git",
+            "path": "/home/hasan/multi-shipping-and-billing",
+            "post-deploy": "npm install && pm2 startOrRestart ecosystem.json --env production"
+        }
+    }
+}
