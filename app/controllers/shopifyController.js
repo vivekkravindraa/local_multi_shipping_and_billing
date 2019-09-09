@@ -110,7 +110,11 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(tokenUpdated => {
                                 if (tokenUpdated) {
-                                    res.status(200).send('Shop found, Token updated.');
+                                    // res.status(200).send('Shop found, Token updated.');
+                                    res.status(200).render('app', {
+                                        title: 'Shopify Node App',
+                                        shop: shop
+                                    });
                                 } else {
                                     res.status(404).send('Shop not found!');
                                 }
@@ -154,7 +158,7 @@ router.get('/callback', (req, res) => {
                         if (shopResponse) {
                             // res.status(200).end(shopResponse);
                             // res.status(200).redirect(`${process.env.REACT_URL}`)
-                            res.render('app', {
+                            res.status(200).render('app', {
                                 title: 'Shopify Node App',
                                 shop: shop
                             });
