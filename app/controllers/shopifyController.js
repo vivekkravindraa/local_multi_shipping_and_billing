@@ -96,7 +96,10 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(userSaved => {
                                 if (userSaved) {
-                                    res.status(200).send('Shop created.');
+                                    res.status(200).render('app', {
+                                        title: 'Shopify Node App',
+                                        shop: shop
+                                    });
                                 } else {
                                     res.status(404).send('Unable to create shop!');
                                 }
