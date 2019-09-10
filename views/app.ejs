@@ -68,13 +68,21 @@ p,div,a,span, input, td{ font-weight: 400;}
     </div>
 </nav>
 <hr />
-<div id="content">
+<div id="content" class="content">
+    <h6>Application has been installed successfully!</h6>
     <p>Welcome to <b><%= shop %></b></p>
 </div>
 <style>
 section{padding-bottom:50px;}
 #content {
     text-align: center;
+}
+.content h6 {
+    background-color: greenyellow;
+    padding: 8px 8px 8px 8px;
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 400px;
+    margin-right: 400px;
 }
 a.navbar-brand.topnav {
     height: auto;
