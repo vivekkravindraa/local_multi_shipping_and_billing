@@ -87,14 +87,18 @@ p,div,a,span, input, td{ font-weight: 400;}
     <p>The script contains the DOM manipulation mechanism, which builds the various addresses on to the DOM. To understand in brief, we have added the screenshot and the script snippet in the below section.</p>
 </div>
 <div id="assets" class="assets">
-    <img src="/ShippingAddress-1-Desktop.png" alt="Loading.." />
-    <img src="/ShippingAddress-2-Desktop.png" alt="Loading.." />
-    <img src="/BillingAddress-1-Desktop.png" alt="Loading.." />
-    <img src="/BillingAddress-2-Desktop.png" alt="Loading.." />
-    <img src="/ShippingAddress-1-Mobile.png" alt="Loading.." />
-    <img src="/ShippingAddress-2-Mobile.png" alt="Loading.." />
-    <img src="/BillingAddress-1-Mobile.png" alt="Loading.."/>
-    <img src="/BillingAddress-2-Mobile.png" alt="Loading.." />
+    <div id="desktop" class="desktop">
+        <img src="/ShippingAddress-1-Desktop.png" alt="Loading.." />
+        <img src="/ShippingAddress-2-Desktop.png" alt="Loading.." />
+        <img src="/BillingAddress-1-Desktop.png" alt="Loading.." />
+        <img src="/BillingAddress-2-Desktop.png" alt="Loading.." />
+    </div>
+    <div id="mobile" class="mobile">
+        <img src="/ShippingAddress-1-Mobile.png" alt="Loading.." />
+        <img src="/ShippingAddress-2-Mobile.png" alt="Loading.." />
+        <img src="/BillingAddress-1-Mobile.png" alt="Loading.."/>
+        <img src="/BillingAddress-2-Mobile.png" alt="Loading.." />
+    </div>
 </div>
 <div id="script" class="script">
 <pre>
@@ -697,6 +701,20 @@ section{padding-bottom:50px;}
 }
 .assets {
     margin: 40px 100px 40px 100px;
+}
+.assets .desktop img {
+    width: auto;
+    height: 100%;
+    border: 1px solid coral;
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 10px;
+}
+.assets .mobile img {
+    width: auto;
+    height: 100%;
+    border: 1px solid coral;
+    border-radius: 4px 4px 4px 4px;
+    margin: 10px 40px 0px 0px;
 }
 .data {
     border: 1px solid #000;
