@@ -222,11 +222,13 @@ p,div,a,span, input, td{ font-weight: 400;}
                 }
             }, false);
         }
-    
-        let formHandle = document.getElementsByClassName('section__content');
-        formHandle[1].style.display = 'none';
-        formHandle[1].style.marginBottom = '8px';
-        
+
+        if(customerId && (ShopifyAnalytics.meta.page.path == "/checkout/contact_information" || ShopifyAnalytics.meta.page.path == "/checkout/payment")) {
+            let formHandle = document.getElementsByClassName('section__content');
+            formHandle[1].style.display = 'none';
+            formHandle[1].style.marginBottom = '8px';
+        }
+
         let addNewShippingAddressHandle = document.getElementById('newShippingAddress');
         if(addNewShippingAddressHandle) {
             addNewShippingAddressHandle.addEventListener('click', function(e) {
@@ -315,17 +317,19 @@ p,div,a,span, input, td{ font-weight: 400;}
         }
         
         let hideHandle = document.getElementById('hide');
-        hideHandle.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            let formHandle = document.getElementsByClassName('section__content');
-            formHandle[1].style.display = 'none';
-            
-            if(ShopifyAnalytics.meta.page.path == "/checkout/payment") {
-                let billing = document.querySelectorAll('#section--billing-address__different');
-                billing[2].setAttribute('class','radio-group__row content-box__row content-box__row--secondary hidden');
-            }
-        }, false);
+        if(hideHandle) {
+            hideHandle.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if(ShopifyAnalytics.meta.page.path == "/checkout/contact_information" || ShopifyAnalytics.meta.page.path == "/checkout/payment") {
+                    let formHandle = document.getElementsByClassName('section__content');
+                    formHandle[1].style.display = 'none';
+                    
+                    let billing = document.querySelectorAll('#section--billing-address__different');
+                    billing[2].setAttribute('class','radio-group__row content-box__row content-box__row--secondary hidden');
+                }
+            }, false);
+        }
         
         function getAddress() {
             for(let uh = 0; uh < radioButtons.length; uh++) {
