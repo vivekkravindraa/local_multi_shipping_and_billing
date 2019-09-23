@@ -42,10 +42,6 @@ router.get('/callback', (req, res) => {
 
     if (state !== stateCookie) {
         return res.status(403).send('Request origin cannot be verified');
-        // return res.status(200).render('app', {
-        //     title: 'Shopify Node App',
-        //     shop: shop
-        // });
     }
 
     if (shop && hmac && code) {
@@ -100,11 +96,7 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(userSaved => {
                                 if (userSaved) {
-                                    // res.status(200).send('Shop created.')
-                                    res.status(200).render('app', {
-                                        title: 'Shopify Node App',
-                                        shop: shop
-                                    });
+                                    console.log('Shop Created.')
                                 } else {
                                     res.status(404).send('Unable to create shop!');
                                 }
@@ -118,11 +110,7 @@ router.get('/callback', (req, res) => {
                             .save()
                             .then(tokenUpdated => {
                                 if (tokenUpdated) {
-                                    // res.status(200).send('Shop found, Token updated.');
-                                    res.status(200).render('app', {
-                                        title: 'Shopify Node App',
-                                        shop: shop
-                                    });
+                                    console.log('Shop found, Token Updated.');
                                 } else {
                                     res.status(404).send('Shop not found!');
                                 }
