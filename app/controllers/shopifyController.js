@@ -137,7 +137,7 @@ router.get('/callback', (req, res) => {
                                 .post(webhookUrl, webhookBody, { headers: shopRequestHeaders })
                                 .then((response) => {
                                     if(response) {
-                                        res.status(200).send('Successfully registered the webhook.');
+                                        console.log('Successfully registered the webhook.')
                                     } else {
                                         res.status(404).send('Webhook registration failed!');
                                     }
