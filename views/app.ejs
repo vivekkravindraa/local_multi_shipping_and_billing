@@ -68,7 +68,7 @@ p,div,a,span,input,td { font-weight: 400; }
     </div>
 </nav>
 <hr />
-<button id="activate" class="activate">Activate</button>
+<button id="activate" class="activate" onclick="myBilling()">Activate</button>
 <div id="panel-data" class="deactivate" style="display: none">
     <div id="content" class="content">
         <h6>Application has been installed successfully!</h6>
@@ -694,8 +694,10 @@ p,div,a,span,input,td { font-weight: 400; }
 </pre>
     </div>
 </div>
-<script>
-    
+<script type="text/javascript">
+    function myBilling() {
+        console.log('i am called..');
+    }
 </script>
 <style>
 section{padding-bottom:50px;}

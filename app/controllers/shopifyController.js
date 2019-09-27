@@ -156,7 +156,8 @@ router.get('/callback', (req, res) => {
                             // res.status(200).redirect(`${process.env.REACT_URL}`)
                             res.status(200).render('app', {
                                 title: 'Shopify Node App',
-                                shop: shop
+                                shop: shop,
+                                token: accessToken
                             });
                         }
                     })
