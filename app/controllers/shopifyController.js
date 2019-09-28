@@ -15,7 +15,7 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const tunnelUrl = process.env.TUNNEL_URL;
 const apiVersion = process.env.API_VERSION;
 const scopes = 'read_products, read_orders, write_orders';
-const forwardingAddress = "https://3ef4c518.ngrok.io";
+const forwardingAddress = "https://e54d0a28.ngrok.io";
 
 const { Shopify } = require('../models/Shopify');
 const { Billing } = require('../models/Billing');
@@ -153,37 +153,43 @@ router.get('/callback', (req, res) => {
                 
                 axios
                     .get(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, { headers: shopRequestHeaders })
-                    .then((billingData) => {
-                        console.log(util.inspect(billingData));
-                        if(!billingData.recurring_application_charges) {
-                            axios
-                            .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
-                                "recurring_application_charge": {
-                                    "name": "Plan@4.99",
-                                    "price": 4.99,
-                                    "return_url": "https://plan.shopifyapps.com",
-                                    "test": true
-                                }
-                            }, { headers: shopRequestHeaders })
-                            .then((billingResponse) => {
-                                let billingBody = billingResponse.data;
-                                let billing = new Billing(billingBody);
-                                billing
-                                    .save()
-                                    .then((billingData) => {
-                                        if(billingData) {
-                                            console.log('Billing data has been saved.');
-                                        } else {
-                                            res.status(404).send('Recurring application billing failed!')
+                    .then((billResponse) => {
+                        // console.log(billResponse.data.recurring_application_charges);
+                        if(billResponse.data.recurring_application_charges.length > 0) {
+                            
+                            let billData = billResponse.data.recurring_application_charges.find(item => item.status == 'active');
+                            if(billData) {
+                                console.log('Recurring application charges are already activated!');
+                            } else {
+                                axios
+                                    .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
+                                        "recurring_application_charge": {
+                                            "name": "Plan@4.99",
+                                            "price": 4.99,
+                                            "return_url": "https://plan.shopifyapps.com",
+                                            "test": true
                                         }
+                                    }, { headers: shopRequestHeaders })
+                                    .then((billingResponse) => {
+                                        let billingBody = billingResponse.data;
+                                        let billing = new Billing(billingBody);
+                                        billing
+                                            .save()
+                                            .then((billingData) => {
+                                                if(billingData) {
+                                                    console.log('Billing data has been saved.');
+                                                } else {
+                                                    res.status(404).send('Recurring application billing failed!')
+                                                }
+                                            })
+                                            .catch((e) => {
+                                                res.status(400).send('Unable to fetch the details..');
+                                            })
                                     })
                                     .catch((e) => {
                                         res.status(400).send('Unable to fetch the details..');
                                     })
-                            })
-                            .catch((e) => {
-                                res.status(400).send('Unable to fetch the details..');
-                            })
+                            }
                         }
                     })
                     .catch((e) => {
