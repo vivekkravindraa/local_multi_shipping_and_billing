@@ -18,10 +18,10 @@ router.get('/', (req,res) => {
     })
 });
 
-router.get('/:billingId', (req,res) => {
-    let id = req.params.billingId;
+router.get('/:id', (req,res) => {
+    let value = req.params.id;
 
-    Billing.find({ id })
+    Billing.findOne({ 'recurring_application_charge.id': value })
     .then((billing) => {
         if(billing) {
             res.status(200).send(billing);
