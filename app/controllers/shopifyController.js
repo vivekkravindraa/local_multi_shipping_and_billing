@@ -17,6 +17,7 @@ const scopes = 'read_products, read_orders, write_orders';
 const forwardingAddress = "https://3ef4c518.ngrok.io";
 
 const { Shopify } = require('../models/Shopify');
+const { Billing } = require('../models/Billing');
 
 router.get('/', (req, res) => {
     const shop = req.query.shop;
@@ -154,11 +155,42 @@ router.get('/callback', (req, res) => {
                         if (shopResponse) {
                             // res.status(200).end(shopResponse);
                             // res.status(200).redirect(`${process.env.REACT_URL}`)
-                            res.status(200).render('app', {
-                                title: 'Shopify Node App',
-                                shop: shop,
-                                token: accessToken
-                            });
+                            axios
+                                .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
+                                    "recurring_application_charge": {
+                                        "name": "Plan@4.99",
+                                        "price": 4.99,
+                                        "return_url": "https://plan.shopifyapps.com",
+                                        "test": true
+                                    }
+                                }, { headers: shopRequestHeaders })
+                                .then((billingResponse) => {
+                                    console.log('BILLING RESPONSE', billingResponse);
+                                    let billing = new Billing(billingResponse);
+                                    billing
+                                        .save()
+                                        .then((billingData) => {
+                                            console.log('BILLING DATA', billingData);
+                                            if(billingData) {
+                                                res.status(200).render('app', {
+                                                    title: 'Shopify Node App',
+                                                    shop: shop
+                                                });
+                                            } else {
+                                                res.status(404).send('Recurring application billing failed!')
+                                            }
+                                        })
+                                        .catch((e) => {
+                                            res.status(400).send('Unable to fetch the details..');
+                                        })
+                                })
+                                .catch((e) => {
+                                    res.status(400).send('Unable to fetch the details..');
+                                })
+                            // res.status(200).render('app', {
+                            //     title: 'Shopify Node App',
+                            //     shop: shop
+                            // });
                         }
                     })
                     .catch((error) => {

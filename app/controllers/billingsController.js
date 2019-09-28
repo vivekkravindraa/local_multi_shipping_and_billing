@@ -2,10 +2,9 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-router.get('/activate',(req,res) => {
-    axios.get('')
-    .then(() => {})
-    .catch(() => {})
-})
+const { Billing } =  require('../models/Billing');
+
+router.get('/', (req,res) => { });
+router.post('/', (req,res) => { });
 
 module.exports = { billingsController: router }
