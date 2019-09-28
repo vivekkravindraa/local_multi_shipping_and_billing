@@ -8,6 +8,7 @@ const cookie = require('cookie');
 const nonce = require('nonce')();
 const querystring = require('querystring');
 const request = require('request-promise');
+const util = require('util');
 
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
@@ -151,33 +152,42 @@ router.get('/callback', (req, res) => {
                     .catch((e) => { console.log(e); })
                 
                 axios
-                    .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
-                        "recurring_application_charge": {
-                            "name": "Plan@4.99",
-                            "price": 4.99,
-                            "return_url": "https://plan.shopifyapps.com",
-                            "test": true
-                        }
-                    }, { headers: shopRequestHeaders })
-                    .then((billingResponse) => {
-                        console.log('BILLING RESPONSE', billingResponse.data);
-                        let billingBody = billingResponse.data;
-                        let billing = new Billing(billingBody);
-                        billing
-                            .save()
-                            .then((billingData) => {
-                                if(billingData) {
-                                    console.log('BILLING DATA', billingData);
-                                } else {
-                                    res.status(404).send('Recurring application billing failed!')
+                    .get(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, { headers: shopRequestHeaders })
+                    .then((billingData) => {
+                        console.log(util.inspect(billingData));
+                        if(!billingData.recurring_application_charges) {
+                            axios
+                            .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
+                                "recurring_application_charge": {
+                                    "name": "Plan@4.99",
+                                    "price": 4.99,
+                                    "return_url": "https://plan.shopifyapps.com",
+                                    "test": true
                                 }
+                            }, { headers: shopRequestHeaders })
+                            .then((billingResponse) => {
+                                let billingBody = billingResponse.data;
+                                let billing = new Billing(billingBody);
+                                billing
+                                    .save()
+                                    .then((billingData) => {
+                                        if(billingData) {
+                                            console.log('Billing data has been saved.');
+                                        } else {
+                                            res.status(404).send('Recurring application billing failed!')
+                                        }
+                                    })
+                                    .catch((e) => {
+                                        res.status(400).send('Unable to fetch the details..');
+                                    })
                             })
                             .catch((e) => {
                                 res.status(400).send('Unable to fetch the details..');
                             })
+                        }
                     })
                     .catch((e) => {
-                        res.status(400).send('Unable to fetch the details..');
+                        console.log(e);
                     })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
