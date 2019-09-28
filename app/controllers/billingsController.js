@@ -6,9 +6,9 @@ const { Billing } =  require('../models/Billing');
 
 router.get('/', (req,res) => {
     Billing.find()
-    .then((response) => {
-        if(response) {
-            res.status(200).send(response);
+    .then((billings) => {
+        if(billings) {
+            res.status(200).send(billings);
         } else {
             res.status(404).send('Billings data not found!');
         }
@@ -21,10 +21,10 @@ router.get('/', (req,res) => {
 router.get('/:billingId', (req,res) => {
     let id = req.params.billingId;
 
-    Billing.findOne({ id: billingId })
-    .then((response) => {
-        if(response) {
-            res.status(200).send(response);
+    Billing.find({ id })
+    .then((billing) => {
+        if(billing) {
+            res.status(200).send(billing);
         } else {
             res.status(404).send('Billing data not found!');
         }

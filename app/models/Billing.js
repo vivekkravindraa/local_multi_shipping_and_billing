@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
     recurring_application_charge: {
-        id: { type: Number },
+        id: { type: String },
         name: { type: String },
         api_client_id: { type: Number },
         price: { type: String },
