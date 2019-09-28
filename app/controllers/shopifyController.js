@@ -161,7 +161,8 @@ router.get('/callback', (req, res) => {
                     }, { headers: shopRequestHeaders })
                     .then((billingResponse) => {
                         console.log('BILLING RESPONSE', billingResponse.data);
-                        let billing = new Billing(billingResponse);
+                        let billingBody = billingResponse.data;
+                        let billing = new Billing(billingBody);
                         billing
                             .save()
                             .then((billingData) => {
