@@ -172,8 +172,8 @@ router.get('/callback', (req, res) => {
 
                                 billing
                                     .save()
-                                    .then(response => console.log('DB RESPONSE',response))
-                                    .catch(e => console.log(e))
+                                    .then((response) => { console.log('DB RESPONSE',response); })
+                                    .catch((e) => { console.log(e); })
                             })
                             .catch((e) => {
                                 console.log(e);
