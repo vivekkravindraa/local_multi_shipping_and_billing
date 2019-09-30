@@ -47,24 +47,20 @@ router.get('/', (req,res) => {
                     })
                     .then((response) => {
                         if(response) {
-                            Billing.findOne({ 'recurring_application.charge.id': response.recurring_application_charge.id })
+                            let id = response.data.recurring_application_charge.id;
+                            let status = response.data.recurring_application_charge.status;
+                            let billing_on = response.data.recurring_application_charge.billing_on;
+
+                            Billing.findOne({ 'recurring_application_charge.id': id})
                             .then((response) => {
-                                if(response) {
-                                    let objectId = response._id;
-                                    let body = {
-                                        'recurring_application_charge': {
-                                            'status': response.recurring_application_charge.status,
-                                            'billing_on': response.recurring_application_charge.billing_on
-                                        }
-                                    }
-                                    Billing.findByIdAndUpdate(objectId, { $set: body }, { new: true })
-                                    .then((response) => {
-                                        console.log('UPDATED BILLING BODY', response);
-                                    })
-                                    .catch((e) => {
-                                        console.log(e);
-                                    })
-                                }
+                                response.recurring_application_charge.status = status;
+                                response.recurring_application_charge.billing_on = billing_on;
+                                return response.save();
+                            })
+                            .then((response) => {
+                                res.send({
+                                    notice: 'Successfully updated the billing status!'
+                                })
                             })
                             .catch((e) => {
                                 console.log(e);
