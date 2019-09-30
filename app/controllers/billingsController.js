@@ -5,7 +5,8 @@ const router = express.Router();
 const dotenv = require('dotenv').config();
 const apiVersion = process.env.API_VERSION;
 
-const { Billing } =  require('../models/Billing');
+const { Billing } = require('../models/Billing');
+const { Shopify } = require('../models/Shopify');
 
 router.get('/', (req,res) => {
     let shop = req.query.shop;
@@ -30,6 +31,24 @@ router.get('/id', (req,res) => {
     .then((billing) => {
         if(billing) {
             res.status(200).send(billing);
+            // console.log('BILLING RESPONSE',billing);
+            // let chargeId = billing.recurring_application_charge.id;
+            // Shopify.findOne({ shopDomain: billing.shopName })
+            // .then((response) => {
+            //     if(response) {
+            //         console.log('SHOP RESPONSE',response);
+            //         let shop = response.shopDomain;
+            //         let token = response.accessToken;
+            //         axios.get(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges/${chargeId}.json`, {
+            //             'X-Shopify-Access-Token': token
+            //         })
+            //         .then((response) => { console.log('API RESPONSE',response.data) })
+            //         .catch((e) => { console.log(e) })
+            //     }
+            // })
+            // .catch((e) => {
+            //     console.log(e);
+            // })
         } else {
             res.status(404).send('Billing data not found!');
         }
