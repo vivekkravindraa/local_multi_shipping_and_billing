@@ -11,6 +11,9 @@ const { Shopify } = require('../models/Shopify');
 router.get('/', (req,res) => {
     let id = req.query.charge_id;
 
+    let dateNow = new Date();
+    let date = JSON.stringify(dateNow).slice(1,11);
+
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
@@ -23,7 +26,7 @@ router.get('/', (req,res) => {
                     'price': `${billing.recurring_application_charge.price}`,
                     'status': `${billing.recurring_application_charge.status}` == 'pending' ? 'accepted' : `${billing.recurring_application_charge.status}`,
                     'return_url': `${billing.recurring_application_charge.return_url}`,
-                    'billing_on': `${billing.recurring_application_charge.created_at}` == null ? `${billing.recurring_application_charge.created_at.slice(0,10)}` : `${billing.recurring_application_charge.created_at}`,
+                    'billing_on': `${billing.recurring_application_charge.created_at}` == null ? `${date}` : `${billing.recurring_application_charge.created_at}`,
                     'created_at': `${billing.recurring_application_charge.created_at}`,
                     'updated_at': `${billing.recurring_application_charge.updated_at}`,
                     'test': Boolean(`${billing.recurring_application_charge.test}`),
