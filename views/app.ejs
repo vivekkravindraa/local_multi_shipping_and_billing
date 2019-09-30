@@ -15,6 +15,7 @@
     </html>
 -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,9 +26,10 @@
 <script type="text/javascript">
     let chargeId = '';
     let confirmationUrl = '';
+    let returnUrl = '';
 
     function activateBilling() {
-        window.open(`${confirmationUrl}`);
+        window.open(`${decoratedReturnUrl}`);
     }
 
     $(document).ready(function(){
@@ -40,6 +42,7 @@
                     $("#activate").css("display","");
                     chargeId = data.recurring_application_charge.id;
                     confirmationUrl = data.recurring_application_charge.confirmation_url;
+                    decoratedReturnUrl = data.recurring_application_charge.decorated_return_url;
                 } else {
                     $("#panel-data").css("display","");
                 }

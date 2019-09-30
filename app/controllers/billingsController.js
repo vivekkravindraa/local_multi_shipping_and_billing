@@ -41,19 +41,4 @@ router.get('/id', (req,res) => {
     })
 });
 
-router.get('/activate', (req,res) => {
-    console.log(req.query.params);
-
-    let shop = req.query.shop;
-    let chargeId = req.query.chargeId;
-
-    axios.post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges/${chargeId}/activate.json`, {}, {})
-    .then((response) => {
-        console.log(response.data);
-    })
-    .catch((e) => {
-        console.log(e);
-    })
-});
-
 module.exports = { billingsController: router }
