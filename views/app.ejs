@@ -36,16 +36,11 @@
             url: "https://e54d0a28.ngrok.io/billings/?shop=<%=shop%>",
             dataType: "json",
             success: function(data) {
-                // console.log(data);
                 if(data.recurring_application_charge.status !== 'active') {
                     $("#activate").css("display","");
-                    $("#panel-data").css("display","none");
                     chargeId = data.recurring_application_charge.id;
                     confirmationUrl = data.recurring_application_charge.confirmation_url;
-                    // console.log(chargeId);
-                    // console.log(confirmationUrl);
                 } else {
-                    $("#activate").css("display","none");
                     $("#panel-data").css("display","");
                 }
             }
@@ -98,8 +93,10 @@ p,div,a,span,input,td { font-weight: 400; }
     </div>
 </nav>
 <hr />
-<button id="activate" class="activate" onclick="activateBilling()">Activate</button>
-<div id="panel-data" class="deactivate">
+<div class="billing">
+    <button id="activate" class="activate" onclick="activateBilling()" style="display: none">Activate</button>
+</div>
+<div id="panel-data" class="deactivate" style="display: none">
     <div id="content" class="content">
         <h6>Application has been installed successfully!</h6>
         <p>Welcome to <b><%= shop %></b></p>
@@ -731,6 +728,13 @@ section{padding-bottom:50px;}
 }
 #helpdesk:hover {
     color: #2b2b71
+}
+#activate {
+    color: white;
+    background-color: #2b2b71;
+    border-radius: 4px 4px 4px 4px;
+    padding: 20px 20px 20px 20px;
+    font-family: 'Courier New', Courier, monospace;
 }
 .content h6 {
     background-color: greenyellow;
