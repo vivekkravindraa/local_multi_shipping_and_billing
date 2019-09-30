@@ -26,9 +26,8 @@
 <script type="text/javascript">
     let chargeId = '';
     let confirmationUrl = '';
-    let decoratedReturnUrl = '';
 
-    function activateBilling() { window.open(`${decoratedReturnUrl}`); }
+    function activateBilling() { window.open(`${confirmationUrl}`); }
 
     $(document).ready(function(){
         $.ajax({
@@ -40,7 +39,6 @@
                     $("#activate").css("display","");
                     chargeId = data.recurring_application_charge.id;
                     confirmationUrl = data.recurring_application_charge.confirmation_url;
-                    decoratedReturnUrl = data.recurring_application_charge.decorated_return_url;
                 } else {
                     $("#panel-data").css("display","");
                 }

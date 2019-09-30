@@ -30,6 +30,7 @@ router.get('/id', (req,res) => {
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
+            let chargeId = billing.recurring_application_charge.id;
             let billingBody = {
                 'recurring_application_charge': {
                     'id': Number(`${billing.recurring_application_charge.id}`),
@@ -56,7 +57,7 @@ router.get('/id', (req,res) => {
                 let token = response.accessToken;
                 
                 axios
-                    .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges/${id}/activate.json`,
+                    .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges/${chargeId}/activate.json`,
                         billingBody,
                         { headers: { 'X-Shopify-Access-Token' : token }
                     })
