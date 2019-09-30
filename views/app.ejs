@@ -31,7 +31,7 @@
     $(document).ready(function(){
         $.ajax({
             type: "GET",
-            url: "https://65f649b0.ngrok.io/billings/?shop=<%=shop%>",
+            url: "https://65f649b0.ngrok.io/billings/domain/?shop=<%=shop%>",
             dataType: "json",
             success: function(data) {
                 if(data.recurring_application_charge.status !== 'active') {
