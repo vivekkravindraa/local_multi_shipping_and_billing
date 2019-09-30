@@ -158,7 +158,7 @@ router.get('/callback', (req, res) => {
                                 "recurring_application_charge": {
                                     "name": "Plan@4.99",
                                     "price": 4.99,
-                                    "return_url": "https://e54d0a28.ngrok.io/billings",
+                                    "return_url": "https://e54d0a28.ngrok.io/billings/id",
                                     "test": true
                                 }
                             }, { headers: shopRequestHeaders })

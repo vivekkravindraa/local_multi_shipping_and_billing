@@ -23,8 +23,8 @@ router.get('/', (req,res) => {
     })
 });
 
-router.get('/:billingId', (req,res) => {
-    let id = req.params.billingId;
+router.get('/id', (req,res) => {
+    let id = req.query.charge_id;
 
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
