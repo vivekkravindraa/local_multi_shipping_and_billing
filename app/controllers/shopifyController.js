@@ -182,9 +182,7 @@ router.get('/callback', (req, res) => {
                         console.log('Recurring billing charges are already created!');
                     }
                 })
-                .catch((e) => {
-                    console.log(e);
-                })
+                .catch((e) => { console.log(e); })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
