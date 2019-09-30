@@ -14,7 +14,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const tunnelUrl = process.env.TUNNEL_URL;
 const apiVersion = process.env.API_VERSION;
-const scopes = 'read_products, read_orders, write_orders';
+const scopes = 'read_products, write_products, read_orders, write_orders';
 const forwardingAddress = "https://e54d0a28.ngrok.io";
 
 const { Shopify } = require('../models/Shopify');
@@ -150,6 +150,39 @@ router.get('/callback', (req, res) => {
                         }
                     })
                     .catch((e) => { console.log(e); })
+
+                Billing.findOne({ shopName: shop }).then((response) => {
+                    if(!response) {
+                        axios
+                            .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
+                                "recurring_application_charge": {
+                                    "name": "Plan@4.99",
+                                    "price": 4.99,
+                                    "return_url": "https://plan.shopifyapps.com",
+                                    "test": true
+                                }
+                            }, { headers: shopRequestHeaders })
+                            .then((response) => {
+                                // console.log(response.data);
+                                let billingBody = response.data;
+                                let billing = new Billing({
+                                    shopName: shop,
+                                    billingBody
+                                });
+
+                                billing
+                                    .save()
+                                    .then(response => console.log(response))
+                                    .catch(e => console.log(e))
+                            })
+                            .catch((e) => {
+                                console.log(e);
+                            })
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
