@@ -163,7 +163,7 @@ router.get('/callback', (req, res) => {
                                 }
                             }, { headers: shopRequestHeaders })
                             .then((response) => {
-                                // console.log(response.data);
+                                console.log('BILLING RESPONSE',response.data);
                                 let billingBody = response.data;
                                 let billing = new Billing({
                                     shopName: shop,
@@ -172,12 +172,14 @@ router.get('/callback', (req, res) => {
 
                                 billing
                                     .save()
-                                    .then(response => console.log(response))
+                                    .then(response => console.log('DB RESPONSE',response))
                                     .catch(e => console.log(e))
                             })
                             .catch((e) => {
                                 console.log(e);
                             })
+                    } else {
+                        console.log('Recurring billing charges are already created!');
                     }
                 })
                 .catch((e) => {
