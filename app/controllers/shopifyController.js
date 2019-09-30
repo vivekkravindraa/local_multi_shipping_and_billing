@@ -167,7 +167,7 @@ router.get('/callback', (req, res) => {
                                 let billingBody = response.data;
                                 let billing = new Billing({
                                     shopName: shop,
-                                    billingBody
+                                    recurring_application_charge: billingBody.recurring_application_charge
                                 });
 
                                 billing
