@@ -172,19 +172,32 @@ router.get('/callback', (req, res) => {
                                     }, { headers: shopRequestHeaders })
                                     .then((billingResponse) => {
                                         let billingBody = billingResponse.data;
-                                        let billing = new Billing(billingBody);
-                                        billing
-                                            .save()
-                                            .then((billingData) => {
-                                                if(billingData) {
-                                                    console.log('Billing data has been saved.');
-                                                } else {
-                                                    res.status(404).send('Recurring application billing failed!')
-                                                }
-                                            })
-                                            .catch((e) => {
-                                                res.status(400).send('Unable to fetch the details..');
-                                            })
+                                        let billing = new Billing({
+                                            shopName: shop,
+                                            billingBody
+                                        });
+                                        Billing.find({ shopName: shop })
+                                        .then((response) => {
+                                            if(!response) {
+                                                billing
+                                                    .save()
+                                                    .then((billingData) => {
+                                                        if(billingData) {
+                                                            console.log('Billing data has been saved.');
+                                                        } else {
+                                                            res.status(404).send('Recurring application billing failed!')
+                                                        }
+                                                    })
+                                                    .catch((e) => {
+                                                        res.status(400).send('Unable to fetch the details..');
+                                                    })
+                                            } else {
+                                                console.log('Recurring application charges are already activated!');
+                                            }
+                                        })
+                                        .catch((e) => {
+                                            console.log(e);
+                                        })
                                     })
                                     .catch((e) => {
                                         res.status(400).send('Unable to fetch the details..');

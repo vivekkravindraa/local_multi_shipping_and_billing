@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
+    shopName: { type: String },
     recurring_application_charge: {
         id: { type: String },
         name: { type: String },

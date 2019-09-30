@@ -2,6 +2,9 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
+const dotenv = require('dotenv').config();
+const apiVersion = process.env.API_VERSION;
+
 const { Billing } =  require('../models/Billing');
 
 router.get('/', (req,res) => {
@@ -31,6 +34,21 @@ router.get('/:billingId', (req,res) => {
     })
     .catch((e) => {
         res.status(400).send('Unable to fetch the details..');
+    })
+});
+
+router.get('/activate', (req,res) => {
+    console.log(req.query.params);
+
+    let shop = req.query.shop;
+    let chargeId = req.query.chargeId;
+
+    axios.post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges/${chargeId}/activate.json`, {}, {})
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((e) => {
+        console.log(e);
     })
 });
 
