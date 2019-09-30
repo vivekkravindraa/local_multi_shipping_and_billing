@@ -150,64 +150,6 @@ router.get('/callback', (req, res) => {
                         }
                     })
                     .catch((e) => { console.log(e); })
-                
-                axios
-                    .get(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, { headers: shopRequestHeaders })
-                    .then((billResponse) => {
-                        // console.log(billResponse.data.recurring_application_charges);
-                        if(billResponse.data.recurring_application_charges.length > 0) {
-                            
-                            let billData = billResponse.data.recurring_application_charges.find(item => item.status == 'active');
-                            if(billData) {
-                                console.log('Recurring application charges are already activated!');
-                            } else {
-                                axios
-                                    .post(`https://${shop}/admin/api/${apiVersion}/recurring_application_charges.json`, {
-                                        "recurring_application_charge": {
-                                            "name": "Plan@4.99",
-                                            "price": 4.99,
-                                            "return_url": "https://plan.shopifyapps.com",
-                                            "test": true
-                                        }
-                                    }, { headers: shopRequestHeaders })
-                                    .then((billingResponse) => {
-                                        let billingBody = billingResponse.data;
-                                        let billing = new Billing({
-                                            shopName: shop,
-                                            billingBody
-                                        });
-                                        Billing.find({ shopName: shop })
-                                        .then((response) => {
-                                            if(!response) {
-                                                billing
-                                                    .save()
-                                                    .then((billingData) => {
-                                                        if(billingData) {
-                                                            console.log('Billing data has been saved.');
-                                                        } else {
-                                                            res.status(404).send('Recurring application billing failed!')
-                                                        }
-                                                    })
-                                                    .catch((e) => {
-                                                        res.status(400).send('Unable to fetch the details..');
-                                                    })
-                                            } else {
-                                                console.log('Recurring application charges are already activated!');
-                                            }
-                                        })
-                                        .catch((e) => {
-                                            console.log(e);
-                                        })
-                                    })
-                                    .catch((e) => {
-                                        res.status(400).send('Unable to fetch the details..');
-                                    })
-                            }
-                        }
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    })
 
                 request.get(shopRequestUrl, { headers: shopRequestHeaders })
                     .then((shopResponse) => {
