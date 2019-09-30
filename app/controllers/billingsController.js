@@ -8,10 +8,12 @@ const apiVersion = process.env.API_VERSION;
 const { Billing } =  require('../models/Billing');
 
 router.get('/', (req,res) => {
-    Billing.find()
-    .then((billings) => {
-        if(billings) {
-            res.status(200).send(billings);
+    let shop = req.query.shop;
+
+    Billing.findOne({ shopName: shop })
+    .then((billing) => {
+        if(billing) {
+            res.status(200).send(billing);
         } else {
             res.status(404).send('Billings data not found!');
         }

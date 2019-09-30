@@ -22,6 +22,36 @@
 <link rel="stylesheet" href="/src/richtext.min.css">
 <script src="/src/jquery.richtext.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+<script type="text/javascript">
+    let chargeId = '';
+    let confirmationUrl = '';
+
+    function activateBilling() {
+        window.open(`${confirmationUrl}`);
+    }
+
+    $(document).ready(function(){
+        $.ajax({
+            type: "GET",
+            url: "https://e54d0a28.ngrok.io/billings/?shop=<%=shop%>",
+            dataType: "json",
+            success: function(data) {
+                // console.log(data);
+                if(data.recurring_application_charge.status !== 'active') {
+                    $("#activate").css("display","");
+                    $("#panel-data").css("display","none");
+                    chargeId = data.recurring_application_charge.id;
+                    confirmationUrl = data.recurring_application_charge.confirmation_url;
+                    // console.log(chargeId);
+                    // console.log(confirmationUrl);
+                } else {
+                    $("#activate").css("display","none");
+                    $("#panel-data").css("display","");
+                }
+            }
+        });
+    });
+</script>
 <style>
 body,h1,h2,h3,h4,h5,h6,p,div,a,span,input,table,td,th { font-weight: 500; font-family: 'Roboto', sans-serif !important; }
 p,div,a,span,input,td { font-weight: 400; }
@@ -68,8 +98,8 @@ p,div,a,span,input,td { font-weight: 400; }
     </div>
 </nav>
 <hr />
-<button id="activate" class="activate" onclick="myBilling()">Activate</button>
-<div id="panel-data" class="deactivate" style="display: none">
+<button id="activate" class="activate" onclick="activateBilling()">Activate</button>
+<div id="panel-data" class="deactivate">
     <div id="content" class="content">
         <h6>Application has been installed successfully!</h6>
         <p>Welcome to <b><%= shop %></b></p>
@@ -694,11 +724,6 @@ p,div,a,span,input,td { font-weight: 400; }
 </pre>
     </div>
 </div>
-<script type="text/javascript">
-    function myBilling() {
-        console.log('i am called..');
-    }
-</script>
 <style>
 section{padding-bottom:50px;}
 #content {
