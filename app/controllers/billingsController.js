@@ -4,6 +4,7 @@ const router = express.Router();
 
 const dotenv = require('dotenv').config();
 const apiVersion = process.env.API_VERSION;
+const appName = process.env.APP_NAME;
 
 const { Billing } = require('../models/Billing');
 const { Shopify } = require('../models/Shopify');
@@ -61,9 +62,7 @@ router.get('/', (req,res) => {
                                 return response.save();
                             })
                             .then((response) => {
-                                res.send({
-                                    notice: 'Successfully updated the billing status!'
-                                })
+                                res.redirect(`https://${shop}/admin/apps/${process.env.APP_NAME}`);
                             })
                             .catch((e) => {
                                 console.log(e);
