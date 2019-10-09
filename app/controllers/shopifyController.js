@@ -158,6 +158,7 @@ router.get('/callback', (req, res) => {
                                 "recurring_application_charge": {
                                     "name": "Plan@4.99",
                                     "price": 4.99,
+                                    "trial_days": 1,
                                     "return_url": `${forwardingAddress}/billings/`,
                                     "test": true
                                 }
