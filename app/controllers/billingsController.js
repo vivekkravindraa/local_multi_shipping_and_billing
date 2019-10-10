@@ -41,7 +41,7 @@ router.get('/', (req,res) => {
                     'activated_on': `${billing.recurring_application_charge.activated_on}` == 'null' ? null : `${billing.recurring_application_charge.activated_on}`,
                     'cancelled_on': `${billing.recurring_application_charge.cancelled_on}` == 'null' ? null : `${billing.recurring_application_charge.cancelled_on}`,
                     'trial_days': Number(`${billing.recurring_application_charge.trial_days}`),
-                    'trail_ends_on': `${billing.recurring_application_charge.trail_ends_on}` == 'null' ? `${nextDate}` : `${billing.recurring_application_charge.trail_ends_on}`,
+                    'trial_ends_on': `${billing.recurring_application_charge.trial_ends_on}` == 'null' ? `${nextDate}` : `${billing.recurring_application_charge.trial_ends_on}`,
                     'decorated_return_url': `${billing.recurring_application_charge.decorated_return_url}`
                 }
             };
@@ -62,13 +62,13 @@ router.get('/', (req,res) => {
                             let id = response.data.recurring_application_charge.id;
                             let status = response.data.recurring_application_charge.status;
                             let billing_on = response.data.recurring_application_charge.billing_on;
-                            let trail_ends_on = response.data.recurring_application_charge.trail_ends_on;
+                            let trial_ends_on = response.data.recurring_application_charge.trial_ends_on;
 
                             Billing.findOne({ 'recurring_application_charge.id': id})
                             .then((bill) => {
                                 bill.recurring_application_charge.status = status;
                                 bill.recurring_application_charge.billing_on = billing_on;
-                                bill.recurring_application_charge.trail_ends_on = trail_ends_on;
+                                bill.recurring_application_charge.trail_ends_on = trial_ends_on;
                                 return bill.save()
                             })
                             .then((response) => {
