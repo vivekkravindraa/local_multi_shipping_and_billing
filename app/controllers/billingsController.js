@@ -72,7 +72,7 @@ router.get('/', (req,res) => {
                                 bill.recurring_application_charge.status = status;
                                 bill.recurring_application_charge.billing_on = billing_on;
                                 bill.recurring_application_charge.trail_ends_on = trail_ends_on;
-                                return response.save();
+                                return bill.save();
                             })
                             .then((response) => {
                                 console.log('END RESPONSE', response);
