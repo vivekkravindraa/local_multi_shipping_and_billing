@@ -15,6 +15,10 @@ router.get('/', (req,res) => {
     let dateNow = new Date();
     let date = JSON.stringify(dateNow).slice(1,11);
 
+    let today = new Date();
+    let tomorrow = new Date();
+    tomorrow.setDate(today.getDate()+1);
+
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
@@ -27,14 +31,14 @@ router.get('/', (req,res) => {
                     'price': `${billing.recurring_application_charge.price}`,
                     'status': `${billing.recurring_application_charge.status}` == 'pending' ? 'accepted' : `${billing.recurring_application_charge.status}`,
                     'return_url': `${billing.recurring_application_charge.return_url}`,
-                    'billing_on': `${billing.recurring_application_charge.created_at}` == null ? `${date}` : `${billing.recurring_application_charge.created_at}`,
+                    'billing_on': `${billing.recurring_application_charge.billing_on}` == null ? `${date}` : `${billing.recurring_application_charge.created_at}`,
                     'created_at': `${billing.recurring_application_charge.created_at}`,
                     'updated_at': `${billing.recurring_application_charge.updated_at}`,
                     'test': Boolean(`${billing.recurring_application_charge.test}`),
                     'activated_on': `${billing.recurring_application_charge.activated_on}` == 'null' ? null : `${billing.recurring_application_charge.activated_on}`,
                     'cancelled_on': `${billing.recurring_application_charge.cancelled_on}` == 'null' ? null : `${billing.recurring_application_charge.cancelled_on}`,
                     'trial_days': Number(`${billing.recurring_application_charge.trial_days}`),
-                    'trail_ends_on': `${billing.recurring_application_charge.trail_ends_on}` == 'null' ? null : `${billing.recurring_application_charge.trail_ends_on}`,
+                    'trail_ends_on': `${billing.recurring_application_charge.trail_ends_on}` == 'null' ? `${tomorrow}` : `${billing.recurring_application_charge.trail_ends_on}`,
                     'decorated_return_url': `${billing.recurring_application_charge.decorated_return_url}`
                 }
             };
