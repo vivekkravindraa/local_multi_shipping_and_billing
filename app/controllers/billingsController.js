@@ -68,7 +68,7 @@ router.get('/', (req,res) => {
                             .then((bill) => {
                                 bill.recurring_application_charge.status = status;
                                 bill.recurring_application_charge.billing_on = billing_on;
-                                bill.recurring_application_charge.trail_ends_on = trial_ends_on;
+                                bill.recurring_application_charge.trial_ends_on = trial_ends_on;
                                 return bill.save()
                             })
                             .then((response) => {
