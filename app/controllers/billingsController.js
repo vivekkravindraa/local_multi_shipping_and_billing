@@ -60,21 +60,22 @@ router.get('/', (req,res) => {
                     })
                     .then((response) => {
                         if(response) {
-                            console.log('SHOPIFY RESPONSE', response);
+                            console.log('SHOPIFY RESPONSE', response.data);
                             let id = response.data.recurring_application_charge.id;
                             let status = response.data.recurring_application_charge.status;
                             let billing_on = response.data.recurring_application_charge.billing_on;
                             let trail_ends_on = response.data.recurring_application_charge.trail_ends_on;
 
                             Billing.findOne({ 'recurring_application_charge.id': id})
-                            .then((response) => {
+                            .then((bill) => {
                                 console.log('FINAL RESPONSE', response);
-                                response.recurring_application_charge.status = status;
-                                response.recurring_application_charge.billing_on = billing_on;
-                                response.recurring_application_charge.trail_ends_on = trail_ends_on;
+                                bill.recurring_application_charge.status = status;
+                                bill.recurring_application_charge.billing_on = billing_on;
+                                bill.recurring_application_charge.trail_ends_on = trail_ends_on;
                                 return response.save();
                             })
                             .then((response) => {
+                                console.log('END RESPONSE', response);
                                 res.redirect(`https://${shop}/admin/apps/${process.env.APP_NAME}`);
                             })
                             .catch((e) => {
