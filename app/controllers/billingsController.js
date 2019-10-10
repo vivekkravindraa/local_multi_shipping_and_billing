@@ -12,16 +12,6 @@ const { Shopify } = require('../models/Shopify');
 router.get('/', (req,res) => {
     let id = req.query.charge_id;
 
-    let dateNow = new Date();
-    let currentDate = JSON.stringify(dateNow).slice(1,11);
-    // console.log('CURRENT DATE', currentDate);
-
-    let today = new Date();
-    let tomorrow = new Date();
-    tomorrow.setDate(today.getDate()+1);
-    let nextDate = JSON.stringify(tomorrow).slice(1,11);
-    // console.log('NEXT DATE', nextDate);
-
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
@@ -35,21 +25,16 @@ router.get('/', (req,res) => {
                     'status': `${billing.recurring_application_charge.status}` == 'pending' ? 'accepted' : `${billing.recurring_application_charge.status}`,
                     'return_url': `${billing.recurring_application_charge.return_url}`,
                     'billing_on': `${billing.recurring_application_charge.billing_on}`,
-                    // == 'null' ? `${currentDate}` : `${billing.recurring_application_charge.billing_on}`,
                     'created_at': `${billing.recurring_application_charge.created_at}`,
                     'updated_at': `${billing.recurring_application_charge.updated_at}`,
                     'test': Boolean(`${billing.recurring_application_charge.test}`),
                     'activated_on': `${billing.recurring_application_charge.activated_on}`,
-                    // == 'null' ? null : `${billing.recurring_application_charge.activated_on}`,
                     'cancelled_on': `${billing.recurring_application_charge.cancelled_on}`,
-                    // == 'null' ? null : `${billing.recurring_application_charge.cancelled_on}`,
                     'trial_days': Number(`${billing.recurring_application_charge.trial_days}`),
                     'trial_ends_on': `${billing.recurring_application_charge.trial_ends_on}`,
-                    // == 'null' ? `${nextDate}` : `${billing.recurring_application_charge.trial_ends_on}`,
                     'decorated_return_url': `${billing.recurring_application_charge.decorated_return_url}`
                 }
             };
-            console.log('BILLING BODY', billingBody);
 
             Shopify.findOne({ shopDomain: billing.shopName })
             .then((response) => {
@@ -68,12 +53,14 @@ router.get('/', (req,res) => {
                             let status = response.data.recurring_application_charge.status;
                             let billing_on = response.data.recurring_application_charge.billing_on;
                             let trial_ends_on = response.data.recurring_application_charge.trial_ends_on;
+                            let activated_on = response.data.recurring_application_charge.activated_on;
 
                             Billing.findOne({ 'recurring_application_charge.id': id})
                             .then((bill) => {
                                 bill.recurring_application_charge.status = status;
                                 bill.recurring_application_charge.billing_on = billing_on;
                                 bill.recurring_application_charge.trial_ends_on = trial_ends_on;
+                                bill.recurring_application_charge.activated_on = activated_on;
                                 return bill.save()
                             })
                             .then((response) => {
