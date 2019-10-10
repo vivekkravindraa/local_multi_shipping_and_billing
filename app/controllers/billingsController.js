@@ -61,15 +61,15 @@ router.get('/', (req,res) => {
                             console.log('SHOPIFY RESPONSE', response.data);
                             let id = response.data.recurring_application_charge.id;
                             let status = response.data.recurring_application_charge.status;
-                            let billing_on = `${response.data.recurring_application_charge.billing_on}`;
-                            let trail_ends_on = `${response.data.recurring_application_charge.trail_ends_on}`;
+                            let billing_on = response.data.recurring_application_charge.billing_on;
+                            let trail_ends_on = response.data.recurring_application_charge.trail_ends_on;
 
                             Billing.findOne({ 'recurring_application_charge.id': id})
                             .then((bill) => {
                                 console.log('FINAL RESPONSE', bill);
                                 bill.recurring_application_charge.status = status;
-                                bill.recurring_application_charge.billing_on = billing_on;
-                                bill.recurring_application_charge.trail_ends_on = trail_ends_on;
+                                bill.recurring_application_charge.billing_on = `${billing_on}`;
+                                bill.recurring_application_charge.trail_ends_on = `${trail_ends_on}`;
                                 return bill.save();
                             })
                             .then((response) => {
