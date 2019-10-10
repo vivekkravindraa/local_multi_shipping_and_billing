@@ -14,13 +14,13 @@ router.get('/', (req,res) => {
 
     let dateNow = new Date();
     let currentDate = JSON.stringify(dateNow).slice(1,11);
-    console.log(currentDate);
+    console.log('CURRENT DATE', currentDate);
 
     let today = new Date();
     let tomorrow = new Date();
     tomorrow.setDate(today.getDate()+1);
     let nextDate = JSON.stringify(tomorrow).slice(1,11);
-    console.log(nextDate);
+    console.log('NEXT DATE', nextDate);
 
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
@@ -45,6 +45,7 @@ router.get('/', (req,res) => {
                     'decorated_return_url': `${billing.recurring_application_charge.decorated_return_url}`
                 }
             };
+            console.log('BILLING BODY', billingBody);
 
             Shopify.findOne({ shopDomain: billing.shopName })
             .then((response) => {
