@@ -25,7 +25,6 @@ router.get('/', (req,res) => {
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
-            console.log('BILLING RESPONSE', billing);
             let chargeId = billing.recurring_application_charge.id;
             let billingBody = {
                 'recurring_application_charge': {
@@ -49,7 +48,6 @@ router.get('/', (req,res) => {
 
             Shopify.findOne({ shopDomain: billing.shopName })
             .then((response) => {
-                console.log('SHOP RESPONSE', response);
                 let shop = response.shopDomain;
                 let token = response.accessToken;
                 
@@ -63,8 +61,8 @@ router.get('/', (req,res) => {
                             console.log('SHOPIFY RESPONSE', response.data);
                             let id = response.data.recurring_application_charge.id;
                             let status = response.data.recurring_application_charge.status;
-                            let billing_on = response.data.recurring_application_charge.billing_on;
-                            let trail_ends_on = response.data.recurring_application_charge.trail_ends_on;
+                            let billing_on = `${response.data.recurring_application_charge.billing_on}`;
+                            let trail_ends_on = `${response.data.recurring_application_charge.trail_ends_on}`;
 
                             Billing.findOne({ 'recurring_application_charge.id': id})
                             .then((bill) => {
