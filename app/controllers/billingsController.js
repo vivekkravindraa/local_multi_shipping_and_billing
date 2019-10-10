@@ -12,19 +12,19 @@ const { Shopify } = require('../models/Shopify');
 router.get('/', (req,res) => {
     let id = req.query.charge_id;
 
-    let dateNow = new Date();
-    let date = JSON.stringify(dateNow).slice(1,11);
-    console.log(date);
-
-    let today = new Date();
-    let tomorrow = new Date();
-    tomorrow.setDate(today.getDate()+1);
-    let nextDate = JSON.stringify(tomorrow).slice(1,11);
-    console.log(nextDate);
-
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
         if(billing) {
+            let dateNow = new Date();
+            let currentDate = JSON.stringify(dateNow).slice(1,11);
+            console.log(currentDate);
+
+            let today = new Date();
+            let tomorrow = new Date();
+            tomorrow.setDate(today.getDate()+1);
+            let nextDate = JSON.stringify(tomorrow).slice(1,11);
+            console.log(nextDate);
+
             let chargeId = billing.recurring_application_charge.id;
             let billingBody = {
                 'recurring_application_charge': {
@@ -34,7 +34,7 @@ router.get('/', (req,res) => {
                     'price': `${billing.recurring_application_charge.price}`,
                     'status': `${billing.recurring_application_charge.status}` == 'pending' ? 'accepted' : `${billing.recurring_application_charge.status}`,
                     'return_url': `${billing.recurring_application_charge.return_url}`,
-                    'billing_on': `${billing.recurring_application_charge.billing_on}` == 'null' ? `${date}` : `${billing.recurring_application_charge.billing_on}`,
+                    'billing_on': `${billing.recurring_application_charge.billing_on}` == 'null' ? `${currentDate}` : `${billing.recurring_application_charge.billing_on}`,
                     'created_at': `${billing.recurring_application_charge.created_at}`,
                     'updated_at': `${billing.recurring_application_charge.updated_at}`,
                     'test': Boolean(`${billing.recurring_application_charge.test}`),
