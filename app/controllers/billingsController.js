@@ -19,7 +19,8 @@ router.get('/', (req,res) => {
     let today = new Date();
     let tomorrow = new Date();
     tomorrow.setDate(today.getDate()+1);
-    console.log(JSON.stringify(tomorrow).slice(1,11));
+    let nextDate = JSON.stringify(tomorrow).slice(1,11);
+    console.log(nextDate);
 
     Billing.findOne({ 'recurring_application_charge.id': id })
     .then((billing) => {
@@ -40,7 +41,7 @@ router.get('/', (req,res) => {
                     'activated_on': `${billing.recurring_application_charge.activated_on}` == 'null' ? null : `${billing.recurring_application_charge.activated_on}`,
                     'cancelled_on': `${billing.recurring_application_charge.cancelled_on}` == 'null' ? null : `${billing.recurring_application_charge.cancelled_on}`,
                     'trial_days': Number(`${billing.recurring_application_charge.trial_days}`),
-                    'trail_ends_on': `${billing.recurring_application_charge.trail_ends_on}` == 'null' ? `${tomorrow}` : `${billing.recurring_application_charge.trail_ends_on}`,
+                    'trail_ends_on': `${billing.recurring_application_charge.trail_ends_on}` == 'null' ? `${nextDate}` : `${billing.recurring_application_charge.trail_ends_on}`,
                     'decorated_return_url': `${billing.recurring_application_charge.decorated_return_url}`
                 }
             };
